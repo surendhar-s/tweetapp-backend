@@ -141,7 +141,7 @@ public class TweetsServiceImpl implements TweetsService {
 		TweetsDto dto = request.getTweet();
 		try {
 			TweetsEntity entity = tweetsRepo.findByTweetId(dto.getTweetId());
-			entity.setLike(entity.getLike() + 1);
+			entity.setLike(entity.getLike());
 			tweetsRepo.save(entity);
 			response.setStatusMessage("SUCCESS");
 		} catch (Exception e) {
