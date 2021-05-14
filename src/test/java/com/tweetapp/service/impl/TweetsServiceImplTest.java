@@ -1,7 +1,5 @@
 package com.tweetapp.service.impl;
 
-
-
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doThrow;
@@ -9,6 +7,14 @@ import static org.mockito.Mockito.doThrow;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.tweetapp.config.TweetConfigTest;
+import com.tweetapp.dto.Reply;
+import com.tweetapp.dto.TweetsDto;
+import com.tweetapp.entities.TweetsEntity;
+import com.tweetapp.repository.TweetsRepo;
+import com.tweetapp.request.TweetRequest;
+import com.tweetapp.response.TweetResponse;
 
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -20,14 +26,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
-
-import com.tweetapp.config.TweetConfigTest;
-import com.tweetapp.dto.Reply;
-import com.tweetapp.dto.TweetsDto;
-import com.tweetapp.entities.TweetsEntity;
-import com.tweetapp.repository.TweetsRepo;
-import com.tweetapp.request.TweetRequest;
-import com.tweetapp.response.TweetResponse;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = TweetsServiceImpl.class)
@@ -63,14 +61,13 @@ public class TweetsServiceImplTest {
 	@Test
 	public void getAllTweetsTestException() {
 		try {
-			
-	
-		TweetResponse response = new TweetResponse();
-		response.setStatusMessage("FAILURE");
-		Mockito.when(tweetsRepo.findAll()).thenThrow(InternalServerError.class);
-		TweetResponse actualResponse = tweetsServiceImpl.getAllTweets();
-		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
-		}catch(Exception e) {
+
+			TweetResponse response = new TweetResponse();
+			response.setStatusMessage("FAILURE");
+			Mockito.when(tweetsRepo.findAll()).thenThrow(InternalServerError.class);
+			TweetResponse actualResponse = tweetsServiceImpl.getAllTweets();
+			assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -146,43 +143,43 @@ public class TweetsServiceImplTest {
 	@Test
 	public void addTweetTestException() {
 		try {
-		TweetResponse response = new TweetResponse();
-		response.setStatusMessage("FAILURE");
-		TweetRequest request = new TweetRequest();
-		TweetsDto tweet = new TweetsDto();
-		List<Reply> replies = new ArrayList<>();
-		tweet.setDateOfPost("26/04/2021");
-		tweet.setLike(1l);
-		tweet.setReply(replies);
-		tweet.setTweet("");
-		tweet.setTweetId(1l);
-		tweet.setUserTweetId("finny");
-		request.setTweet(tweet);
-		Mockito.when(tweetsRepo.findTopByOrderByTweetIdDesc()).thenThrow(InternalServerError.class);
-		TweetResponse actualResponse = tweetsServiceImpl.addTweet(request, "finny");
-		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
-		}catch(Exception e) {
+			TweetResponse response = new TweetResponse();
+			response.setStatusMessage("FAILURE");
+			TweetRequest request = new TweetRequest();
+			TweetsDto tweet = new TweetsDto();
+			List<Reply> replies = new ArrayList<>();
+			tweet.setDateOfPost("26/04/2021");
+			tweet.setLike(1l);
+			tweet.setReply(replies);
+			tweet.setTweet("");
+			tweet.setTweetId(1l);
+			tweet.setUserTweetId("finny");
+			request.setTweet(tweet);
+			Mockito.when(tweetsRepo.findTopByOrderByTweetIdDesc()).thenThrow(InternalServerError.class);
+			TweetResponse actualResponse = tweetsServiceImpl.addTweet(request, "finny");
+			assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void deleteTweetTest() {
 		TweetResponse response = new TweetResponse();
 		response.setStatusMessage("SUCCESS");
-		TweetResponse actualResponse = tweetsServiceImpl.deleteTweet("finny",1l);
+		TweetResponse actualResponse = tweetsServiceImpl.deleteTweet("finny", 1l);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void deleteTweetTestException() {
 		TweetResponse response = new TweetResponse();
 		response.setStatusMessage("FAILED");
 		doThrow(InternalServerError.class).when(tweetsRepo).deleteByTweetId(1l);
-		TweetResponse actualResponse = tweetsServiceImpl.deleteTweet("finny",1l);
+		TweetResponse actualResponse = tweetsServiceImpl.deleteTweet("finny", 1l);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void replyToTweetTest() {
 		TweetResponse response = new TweetResponse();
@@ -191,7 +188,7 @@ public class TweetsServiceImplTest {
 		TweetsDto tweet = new TweetsDto();
 		List<Reply> replies = new ArrayList<>();
 		Reply reply = new Reply();
-	//	reply.setUserId("bud");
+		// reply.setUserId("bud");
 		reply.setReplied("hello");
 		reply.setDateReplied(new Date());
 		replies.add(reply);
@@ -205,7 +202,7 @@ public class TweetsServiceImplTest {
 		TweetResponse actualResponse = tweetsServiceImpl.replyToTweet(request);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void replyToTweetTestException() {
 		TweetResponse response = new TweetResponse();
@@ -214,7 +211,7 @@ public class TweetsServiceImplTest {
 		TweetsDto tweet = new TweetsDto();
 		List<Reply> replies = new ArrayList<>();
 		Reply reply = new Reply();
-		
+
 		reply.setReplied("hello");
 		reply.setDateReplied(new Date());
 		replies.add(reply);
@@ -223,7 +220,6 @@ public class TweetsServiceImplTest {
 		TweetResponse actualResponse = tweetsServiceImpl.replyToTweet(request);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
 
 	@Test
 	public void likeTweetTest() {
@@ -240,7 +236,7 @@ public class TweetsServiceImplTest {
 		TweetResponse actualResponse = tweetsServiceImpl.likeATweet(request);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void likeTweetTestException() {
 		TweetResponse response = new TweetResponse();
@@ -253,7 +249,7 @@ public class TweetsServiceImplTest {
 		TweetResponse actualResponse = tweetsServiceImpl.likeATweet(request);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void updateTweetTest() {
 		TweetResponse response = new TweetResponse();
@@ -270,7 +266,7 @@ public class TweetsServiceImplTest {
 		TweetResponse actualResponse = tweetsServiceImpl.updateTweet(request);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void updateTweetTestException() {
 		TweetResponse response = new TweetResponse();
@@ -284,8 +280,5 @@ public class TweetsServiceImplTest {
 		TweetResponse actualResponse = tweetsServiceImpl.updateTweet(request);
 		assertEquals(response.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
-	
-	
 
 }

@@ -2,6 +2,12 @@ package com.tweetapp.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.tweetapp.config.TweetConfigTest;
+import com.tweetapp.controller.UsersController;
+import com.tweetapp.request.UserRequest;
+import com.tweetapp.response.UserResponse;
+import com.tweetapp.service.UsersService;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -10,12 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.tweetapp.config.TweetConfigTest;
-import com.tweetapp.controller.UsersController;
-import com.tweetapp.request.UserRequest;
-import com.tweetapp.response.UserResponse;
-import com.tweetapp.service.UsersService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = UsersController.class)
@@ -36,7 +36,7 @@ public class UsersServiceImplTest {
 		UserResponse actualResponse = usersController.getAllUsers();
 		assertEquals(userResponse.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void register() {
 		UserResponse userResponse = new UserResponse();
@@ -46,7 +46,7 @@ public class UsersServiceImplTest {
 		UserResponse actualResponse = usersController.register(request);
 		assertEquals(userResponse.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void forgetPassword() {
 		UserResponse userResponse = new UserResponse();
@@ -56,11 +56,10 @@ public class UsersServiceImplTest {
 		UserResponse actualResponse = usersController.forgetPassword(request);
 		assertEquals(userResponse.getStatusMessage(), actualResponse.getStatusMessage());
 	}
-	
+
 	@Test
 	public void searchUsers() {
 		UserResponse userResponse = new UserResponse();
-		UserRequest request = new UserRequest();
 		userResponse.setStatusMessage("SUCCESS");
 		Mockito.when(usersService.searchUsers("finny")).thenReturn(userResponse);
 		UserResponse actualResponse = usersController.searchUsers("finny");

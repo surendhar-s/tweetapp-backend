@@ -127,11 +127,6 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public UserResponse getAllLoggedInUsers() {
-		UserResponse response = new UserResponse();
-		try {
-			List<UsersEntity> entities = usersRepo.findAllLoggedIn();
-		} catch (Exception e) {
-		}
 		return null;
 	}
 
